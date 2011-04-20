@@ -1,0 +1,30 @@
+# 2011-03-17, New host to back up:
+#
+#       mkdir /mnt/backup/host
+#       Add new entry here (copy one entry and change first two lines).
+#
+# Simple as that.  No advanced uid changes, no firewall, no nothing.  If you
+# made it here, congratulations.
+#
+# TODO: Really?
+
+# --- Global
+syslog facility = daemon
+
+# --- Hosts to Backup
+[che]
+        path = /mnt/backup/che
+        hosts allow = che.*
+        uid = root
+        read only = false
+        write only = true
+        use chroot = true
+
+[trotzki]
+        path = /mnt/backup/trotzki
+        hosts allow = trotzki.*
+        uid = root
+        read only = false
+        write only = true
+        use chroot = true
+
