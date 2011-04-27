@@ -1,11 +1,5 @@
 # Specify which directories to include.
-+ home
-- home/*/.googleearth
-- home/*/.thumbnails
-
-+ boot
-+ boot/grub
-- boot/*
+#+ home
 
 + etc
 + root
@@ -16,10 +10,6 @@
 - usr/*/
 
 + var
-+ var/lib/
-+ var/lib/dokuwiki
-- var/cache
-- var/lib
 
 # Exclude all top-level directories, swap files and Mozilla cache.
 - /*/
