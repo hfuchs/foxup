@@ -1,0 +1,50 @@
+#!/bin/sh
+# 2011-04-26, Display per-machine backup usage statistics.
+
+debug=1
+backup_root="/mnt/backup"
+rsync_conf="/etc/rsyncd.conf"
+max_days=6                  # counting from 0!
+#$max_weeks=4  # TODO
+errors=0
+
+# -- Define loggers (TODO aliases?)
+log_info="logger -i -t foxup-server -p daemon.info"
+log_err="logger  -i -t foxup-server -p daemon.err"
+
+if [ $debug != "0" ]; then
+  log_info="$log_info -s"
+  log_err="$log_err -s"
+fi
+
+# -- Get machine names from the rsync config.
+machines=`sed -n 's/^\[\([a-z]\+\)\]\s*$/\1/p' $rsync_conf`
+$log_info "Machines in backup: " $machines
+
+# -- Generate statistics.
+for host in $machines; do
+  # Do we already have a week's worth of backups?
+  if [ ! -d "$backup_root/$host/day.6" ]; then
+        $log_err "Host $host: No weekful of backups yet."
+	errors=$((errors+1))
+        continue   # Next host.
+  fi
+  # Now we can safely cd().
+  cd "$backup_root/$host/day.6"
+  echo "Weekly backup statistics of $host"
+  echo "-------------------------------------------------------"
+  # I have to compare to day.1 because day.0 might just have been rotated
+  # away.  TODO Or do I?
+  du --max-depth 1 -h ../day.1/* ./* |\
+     grep -v day.1 |\
+     sort -h |\
+     grep -v '^[0-9.]\+K' |\
+     tail -n10
+  echo "-------------------------------------------------------"
+  echo ""
+done
+
+# -- TODO Weekly rotation
+
+exit $errors
+
