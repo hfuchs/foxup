@@ -5,7 +5,7 @@
 rsync_options="--delete --archive --hard-links --acls --xattrs \
     --exclude-from /etc/rsync.backup_filters \
     --link-dest=../day.1"
-server="liebknecht-old"
+server="liebknecht"
 server_mac="00:50:DA:BD:E5:70"
 localhost=`hostname`
 
@@ -30,8 +30,8 @@ rsync $rsync_options / $server::$localhost/day.0
 
 # Let the world know.
 if [ "$?" = "0" ]; then
-        $log_info "Backup successful."; exit 0
+    $log_info "Backup successful."; exit 0
 else
-        $log_err "Backup failed (error $?)."; exit 3
+    $log_err "Backup failed (error $?)."; exit 3
 fi
 
