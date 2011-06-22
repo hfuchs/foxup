@@ -3,7 +3,8 @@
 # Targets are defined in /etc/rsync.backup.{in,ex}clude.
 
 rsync_options="--delete --archive --hard-links --acls --xattrs \
-    --exclude-from /etc/rsync.backup_filters \
+    --exclude-from /etc/foxup.ignore \
+    --exclude-from /etc/foxup.custom \
     --link-dest=../day.1"
 server="liebknecht"
 server_mac="00:50:DA:BD:E5:70"
