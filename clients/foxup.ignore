@@ -1,0 +1,14 @@
+# Short recap of rsync rules (DI = Don't Include):
+#  '- abc'     - DI files or dirs named 'abc'
+#  '- abc/'    - DI dirs (but files)
+#  '- /abc/'   - DI this top-level dir
+#  '- /abc/*'  - DI anything below this top-level dir
+
+- /dev/*
+- /mnt/*
+- /selinux/*
+- /sys/*
+- /media/*
+- /proc/*
+- /tmp/*
+

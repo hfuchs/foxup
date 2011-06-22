@@ -1,0 +1,12 @@
+# Specify which directories to exclude in addition to the ones in
+# foxup.ignore.
+
+# Is usr/ just too heavy for your backup system?
+#- usr/*/
+
+# Exclude Mozilla cache, thumbnails and other well-known caching places?
+#- Cache
+#- .thumbnails/*
+#- .cache/*
+#- .local/share/Trash/*
+
