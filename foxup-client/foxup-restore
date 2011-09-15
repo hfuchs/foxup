@@ -1,0 +1,44 @@
+#!/bin/sh
+# 2011-03-17, My all-purpose, snapshoting backup script.
+# Targets are defined in /etc/rsync.backup.{in,ex}clude.
+# TODO Beautify!
+
+rsync_options="--archive"
+server="liebknecht"
+server_mac="00:50:DA:BD:E5:70"
+localhost=`hostname`
+
+PATH="/bin:/usr/bin"
+
+# Logger definitions
+# TODO Use tinylog!
+log_info="logger -i -t foxup-client -p daemon.info"
+log_err="logger -s -i -t foxup-client -p daemon.err"
+
+# First check whether $1 looks like something that could've been a FS object.
+if [ -n $1 ]; then
+	fsobj="$1"
+else
+	$log_info "No FS object to restore given on the commandline."
+fi
+
+# Wake up the backup server.
+wakeonlan $server_mac > /dev/null || ( $log_err "Could not wake $server."; exit 1 )
+for i in `seq 1 15`; do
+    ping -c 1 $server > /dev/null && break
+    sleep 10
+done
+ping -c 1 $server > /dev/null || ( $log_err "Could not ping $server."; exit 2 )
+sleep 10 # Give 'em time to start rsyncd.
+
+# Restore.
+$log_info "Trying to find '$fsobj' in the backup..."
+rsync $rsync_options "$server::$localhost/day.0/$fsobj" "$fsobj.restored.$$"
+
+# Let the world know.
+if [ "$?" = "0" ]; then
+    $log_info "Restore successful."; exit 0
+else
+    $log_err "Restore failed (error $?)."; exit 3
+fi
+
