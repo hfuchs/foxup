@@ -1,0 +1,18 @@
+# If you want a run-of-the-mill backup with foxup, just give the DNS
+# name of a machine that has foxup-server installed and configured.  If
+# you want to use (and have configured) wake-on-lan, also give it's MAC
+# here.
+#server=""
+#server_mac=""
+
+# If your setup is pathologic and you want to use a different resource
+# name on the server instead of `hostname`, give a name here
+#client=
+
+# To actually run the cron.daily job, uncomment this line.
+#run=yes
+
+# Logger definitions - probably don't need to touch this.
+log_info="logger -i -t foxup-client -p daemon.info"
+log_err="logger -s -i -t foxup-client -p daemon.err"
+
