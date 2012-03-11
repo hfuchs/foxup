@@ -1,0 +1,16 @@
+#!/bin/sh
+# 2012-03-11, TODO.
+
+. /etc/default/foxup
+
+# Return when we don't have a MAC.
+[ -z "$server_mac" ] && exit 0
+
+# Rise and shine!
+wakeonlan $server_mac > /dev/null || ( $log_err "Could not wake $server."; exit 1 )
+for i in `seq 1 15`; do
+    ping -c 1 $server > /dev/null && break
+    sleep 10
+done
+ping -c 1 $server > /dev/null || ( $log_err "Could not ping $server."; exit 2 )
+
