@@ -10,25 +10,23 @@ localhost=`hostname`
 
 PATH="/bin:/usr/bin"
 
-# Logger definitions
-# TODO Use tinylog!
-log_info="logger -i -t foxup-client -p daemon.info"
-log_err="logger -s -i -t foxup-client -p daemon.err"
+. /etc/default/foxup
 
 # First check whether $1 looks like something that could've been a FS object.
-if [ -n $1 ]; then
+if [ -n "$1" ]; then
 	fsobj="$1"
 else
-	$log_info "No FS object to restore given on the commandline."
+	$log_err "No FS object to restore given on the commandline."
+    exit 1
 fi
 
 # Wake up the backup server.
-wakeonlan $server_mac > /dev/null || ( $log_err "Could not wake $server."; exit 1 )
+wakeonlan $server_mac > /dev/null || ( $log_err "Could not wake $server."; exit 2 )
 for i in `seq 1 15`; do
     ping -c 1 $server > /dev/null && break
     sleep 10
 done
-ping -c 1 $server > /dev/null || ( $log_err "Could not ping $server."; exit 2 )
+ping -c 1 $server > /dev/null || ( $log_err "Could not ping $server."; exit 3 )
 sleep 10 # Give 'em time to start rsyncd.
 
 # Restore.
@@ -39,6 +37,6 @@ rsync $rsync_options "$server::$localhost/day.0/$fsobj" "$fsobj.restored.$$"
 if [ "$?" = "0" ]; then
     $log_info "Restore successful."; exit 0
 else
-    $log_err "Restore failed (error $?)."; exit 3
+    $log_err "Restore failed (error $?)."; exit 4
 fi
 
