@@ -1,0 +1,29 @@
+# Short recap of rsync rules (DI = Don't Include):
+#  '- abc'     - DI files or dirs named 'abc'
+#  '- abc/'    - DI dirs (but files)
+#  '- /abc/'   - DI this top-level dir
+#  '- /abc/*'  - DI anything below this top-level dir
+
+# Specify which directories to exclude in addition to the ones below.
+#------------------------------------------------------------------------
+# Is usr/ just too heavy for your backup system?
+#- usr/*/
+
+# Exclude Mozilla cache, thumbnails and other well-known caching places?
+#- Cache
+#- .thumbnails/*
+#- .cache/*
+#- .local/share/Trash/*
+
+#------------------------------------------------------------------------
+# Standard GNU/Linux (or, rather, Debian) pseudo-FS that don't make
+# sense to be backed up.
+- /dev/*
+- /mnt/*
+- /selinux/*
+- /sys/*
+- /media/*
+- /proc/*
+- /tmp/*
+- /run/*
+
