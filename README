@@ -1,0 +1,38 @@
+foxup - Client-Driven Backup™
+================================
+
+2012-03-11, by Hagen Fuchs <code@hfuchs.net>
+
+Motivation / Introduction
+-----------------------------
+
+So what's foxup?  A backup solution that in|sub|perverts the usual
+hierarchy of backup systems in order to be actually useful.  Of course,
+Foxup is [also] a hamlet in the Yorkshire Dales in the Craven district
+of North Yorkshire, England near Halton Gill and Litton.[0]
+
+Anyways.  Here's how traditional small-scale backup software works:
+
+  1. There's a backup server that regularly takes backups of client
+     machines.
+
+(TODO example!  bacula?
+
+
+Alternatives
+-----------------------------
+
+*rsnapshot*.
+Gets started by cron at night to do daily, weekly and monthly backups.
+Nice.  Excpet of course, when your machine isn't online at night.  Take
+a look at <http://bugs.debian.org/523923> for a bit of hilarity (Clever
+dude develops anacron-friendly script (in Ruby, sadly), maintainer: no
+need, we have cron.d-job).
+
+
+
+[0] http://en.wikipedia.org/wiki/Foxup
+
+    Memo to myself: Consult Google on even the most obscure project
+    names and portemanteaus.
+
