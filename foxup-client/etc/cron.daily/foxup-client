@@ -1,29 +1,21 @@
 #!/bin/sh
-# 2011-03-17, My all-purpose, snapshoting backup script.
-# Targets are defined in /etc/rsync.backup.{in,ex}clude.
+# 2011-03-17, Created by H Fuchs <hagen.fuchs@physik.tu-dresden.de>
+#
+# Purpose: My all-purpose, snapshoting backup script.
+# Backup / - exceptions are defined in /etc/foxup/ignore.
 
 rsync_options="--delete --archive --hard-links --acls --xattrs \
-    --exclude-from /etc/foxup.ignore \
-    --exclude-from /etc/foxup.custom \
-    --link-dest=../day.1"
-server="liebknecht"
-server_mac="00:50:DA:BD:E5:70"
+    --exclude-from /etc/foxup/ignore --link-dest=../day.1"
+server="localhost"
 localhost=`hostname`
 
 PATH="/bin:/usr/bin"
 
-# Logger definitions
-log_info="logger -i -t foxup-client -p daemon.info"
-log_err="logger -s -i -t foxup-client -p daemon.err"
+# Load defaults (server name, logger definitions, ...).
+. /etc/default/foxup
 
-# First wake up the backup server.
-wakeonlan $server_mac > /dev/null || ( $log_err "Could not wake $server."; exit 1 )
-for i in `seq 1 15`; do
-    ping -c 1 $server > /dev/null && break
-    sleep 10
-done
-ping -c 1 $server > /dev/null || ( $log_err "Could not ping $server."; exit 2 )
-sleep 10 # Give 'em time to start rsyncd.
+# Run pre-backup scripts now.
+run-parts --exit-on-error --report /etc/foxup/pre_backup.d
 
 # Note: Backing up the *whole* fs tree!  Edit your filter file!
 $log_info "Starting the backup."
