@@ -6,17 +6,26 @@
 #
 # TODO Hourly backups (indeed, any interval)!
 
-port=874
-server="localhost"
-localhost=`hostname`
-
 PATH="/bin:/usr/bin"
+
+# Parameters -- to be overriden in /etc/default/foxup-client.
+run=no
+server="localhost"
+port=874
+log_info="logger -i -t foxup-client -p daemon.info"
+log_err="logger -s -i -t foxup-client -p daemon.err"
+client=$(hostname)
 
 # Load defaults (server name, logger definitions, ...).
 . /etc/default/foxup
 
-# Now set the final option blob.
-# TODO In /etc/default?
+# Go?
+if [ "$run" != "yes" ]; then
+    $log_info "Not starting any backups (see /etc/default/foxup-client)."
+    exit 0  # It's a perfectly expected way to quit.
+fi
+
+# Now set the final option blob.  TODO In /etc/default?
 rsync_options="--port=$port --delete --archive --hard-links --acls \
     --xattrs --exclude-from /etc/foxup/ignore --link-dest=../day.1"
 
@@ -25,7 +34,7 @@ run-parts --exit-on-error --report /etc/foxup/pre_backup.d
 
 # Note: Backing up the *whole* fs tree!  Edit your filter file!
 $log_info "Starting the backup."
-rsync $rsync_options / $server::$localhost/day.0
+rsync $rsync_options / $server::$client/day.0
 
 # Let the world know.
 if [ "$?" = "0" ]; then
