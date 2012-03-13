@@ -4,23 +4,35 @@ foxup - Client-Driven Backup™
 2012-03-11, by Hagen Fuchs <code@hfuchs.net>
 
 Motivation / Introduction
------------------------------
+------------------------------------------------------------
 
 So what's foxup?  A backup solution that in|sub|perverts the usual
 hierarchy of backup systems in order to be actually useful.  Of course,
 Foxup is [also] a hamlet in the Yorkshire Dales in the Craven district
 of North Yorkshire, England near Halton Gill and Litton.[0]
 
-Anyways.  Here's how traditional small-scale backup software works:
+Anyways.  Here's how traditional Linux small-scale (aka personal) backup
+software looks like to me:
 
-  1. There's a backup server that regularly takes backups of client
-     machines.
+  0. They are not small-scale at all (this hits home with most, but
+     bacula and amanda are pretty good paragons of this).
 
-(TODO example!  bacula?
+  1. They look really juicy and really right about perfect (say
+     rsnapshot) until you realize they aren't at all (in rsnapshot's
+     case: it expects the machine to be up at 3.  In the morning.)
+
+  2. They throw a web interface into the deal.  Great!  Thanks!  Bye!
+     (BackupPC)
+
+So, I'm looking for a usable rsnapshot.  Srsly, I'm a /huge/ rsync
+admirer -- Andrew Tridgell and Paul Mackerras are adorable people.
+I adore 'em.  Oookay.  Moving on.  Backup.  Small-scale.  rsync.
+
+TODO Actually say sth about the damn implementation!
 
 
 Alternatives
------------------------------
+------------------------------------------------------------
 
 *rsnapshot*.
 Gets started by cron at night to do daily, weekly and monthly backups.
@@ -28,6 +40,33 @@ Nice.  Excpet of course, when your machine isn't online at night.  Take
 a look at <http://bugs.debian.org/523923> for a bit of hilarity (Clever
 dude develops anacron-friendly script (in Ruby, sadly), maintainer: no
 need, we have cron.d-job).
+
+
+Complete Rewrite for Github-Glory
+------------------------------------------------------------
+
+2012-03-12, Till now, I simply abused the init.d-script for rsync on the
+server-side.  That's not a clean option (well, it could be, if there
+were something like a /etc/rsyncd.d ...).  So, for the server, I simply
+steal this init script and reappropriate it for the masses (ie: change
+the port number).  The client needs little change, but I thought it
+a cool idea to introduce a pre_backup.d directory where currently only
+the wakeonlan-portition of the original script resides.  Possibilities
+boggle the mind.
+
+I even went out of my way and -- *gasp* -- created a Makefile for a fully
+automated package build process!  I hear Sinatra singing just outside my
+window.  It's heavenly.
+
+
+TODO
+------------------------------------------------------------
+
+  + Server: date +"%Y-%m-%d_%H:%M"
+  + Server: probably want to get rid of halt_on_idle some time in the
+    future.  Optional script burried somewhere in /usr/share/?
+
+
 
 
 
