@@ -1,8 +1,8 @@
 #!/bin/sh
-# 2011-03-17, Created by H Fuchs <hagen.fuchs@physik.tu-dresden.de>
+# 2011-03-17, Created by Hagen Fuchs <code@hfuchs.net>
 #
 # Purpose: My all-purpose, snapshoting backup script.
-# Backup / - exceptions are defined in /etc/foxup/ignore.
+# Backup / - exceptions are defined in /etc/foxup-client/ignore.
 #
 # TODO Hourly backups (indeed, any interval)!
 
@@ -17,7 +17,7 @@ log_err="logger -s -i -t foxup-client -p daemon.err"
 client=$(hostname)
 
 # Load defaults (server name, logger definitions, ...).
-. /etc/default/foxup
+. /etc/default/foxup-client
 
 # Go?
 if [ "$run" != "yes" ]; then
@@ -27,10 +27,10 @@ fi
 
 # Now set the final option blob.  TODO In /etc/default?
 rsync_options="--port=$port --delete --archive --hard-links --acls \
-    --xattrs --exclude-from /etc/foxup/ignore --link-dest=../day.1"
+    --xattrs --exclude-from /etc/foxup-client/ignore --link-dest=../day.1"
 
 # Run pre-backup scripts now.
-run-parts --exit-on-error --report /etc/foxup/pre_backup.d
+run-parts --exit-on-error --report /etc/foxup-client/pre_backup.d
 
 # Note: Backing up the *whole* fs tree!  Edit your filter file!
 $log_info "Starting the backup."

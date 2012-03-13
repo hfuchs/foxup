@@ -11,7 +11,7 @@ Description: Simple backup scripts well suited to desktop or mobile systems.
  solution.  It's really just a init-script that runs rsync in daemon
  mode.  You have to install both packages (-client and -server) if you
  want to do rsnapshot-style backups (backup to USB disk).
-  
+ .
  The advantage of this setup is simple: anacron likes foxup (which means
  you finally get true mobile backups).
 
