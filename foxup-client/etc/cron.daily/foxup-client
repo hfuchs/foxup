@@ -21,6 +21,8 @@ client=$(hostname)
 
 # Go?
 if [ "$run" != "yes" ]; then
+    # TODO echo & syslog?
+    echo "Not starting any backups (see /etc/default/foxup-client)."
     $log_info "Not starting any backups (see /etc/default/foxup-client)."
     exit 0  # It's a perfectly expected way to quit.
 fi
