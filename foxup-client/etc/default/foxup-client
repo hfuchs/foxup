@@ -1,22 +1,22 @@
+# To actually run the cron.daily job, uncomment this line.
+#run=yes
+
 # If you want a run-of-the-mill backup with foxup, just give the DNS
 # name of a machine that has foxup-server installed and configured.  If
 # you want to use (and have configured) wake-on-lan, also give it's MAC
 # here.
-#server=""
+server="localhost"
 #server_mac=""
-
-# If your setup is pathologic and you want to use a different resource
-# name on the server instead of `hostname`, give a name here
-#client=
-
-# To actually run the cron.daily job, uncomment this line.
-#run=yes
 
 # If you've changed the port number the server listens on (in
 # /etc/default/foxup-server), then you need to change it here as well.
 # The defaults should be fine, though, as they don't interfere with the
 # normal rsyncd on port 873.
-#port=874
+port=874
+
+# If your setup is pathologic and you want to use a different resource
+# name on the server instead of `hostname`, give a name here
+#client=
 
 # Logger definitions - probably don't need to touch this.
 log_info="logger -i -t foxup-client -p daemon.info"
