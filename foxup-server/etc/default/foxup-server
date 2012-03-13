@@ -1,0 +1,21 @@
+# Take a look at /etc/foxup-server/rsyncd.conf - that's were the juicy
+# bits are.
+
+# Oh, and, yes - uncomment this line if you actually want the server to run.
+#RUN=true
+
+# Extra options for rsyncd.  Don't change the port option without a good
+# reason - we don't want to block the normal rsyncd (port 873).
+# foxup-client connects here by default.
+RSYNC_OPTS='--port=874'
+
+# Run rsyncd at a nice level?
+#  Allowed values are 0 - 19 inclusive; 10 is a reasonable value.
+RSYNC_NICE=''
+
+# Run rsyncd with ionice?
+#  "ionice" does for IO load what "nice" does for CPU load.
+#  -c3 is recommended, this will run rsync IO at "idle" priority. Uncomment
+#  the next line to activate this.
+# RSYNC_IONICE='-c3'
+
