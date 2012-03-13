@@ -6,3 +6,6 @@
 #chmod 0750 /etc/cron.daily/foxup-client
 #chmod 0750 /etc/foxup/pre_backup.d/*
 
+# Enable init script
+update-rc.d foxup-server defaults
+
