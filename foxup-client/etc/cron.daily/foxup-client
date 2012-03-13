@@ -3,9 +3,10 @@
 #
 # Purpose: My all-purpose, snapshoting backup script.
 # Backup / - exceptions are defined in /etc/foxup/ignore.
+#
+# TODO Hourly backups (indeed, any interval)!
 
-rsync_options="--delete --archive --hard-links --acls --xattrs \
-    --exclude-from /etc/foxup/ignore --link-dest=../day.1"
+port=874
 server="localhost"
 localhost=`hostname`
 
@@ -13,6 +14,11 @@ PATH="/bin:/usr/bin"
 
 # Load defaults (server name, logger definitions, ...).
 . /etc/default/foxup
+
+# Now set the final option blob.
+# TODO In /etc/default?
+rsync_options="--port=$port --delete --archive --hard-links --acls \
+    --xattrs --exclude-from /etc/foxup/ignore --link-dest=../day.1"
 
 # Run pre-backup scripts now.
 run-parts --exit-on-error --report /etc/foxup/pre_backup.d
@@ -27,4 +33,6 @@ if [ "$?" = "0" ]; then
 else
     $log_err "Backup failed (error $?)."; exit 3
 fi
+
+# TODO post-backup scripts?
 
