@@ -1,0 +1,8 @@
+#!/bin/sh
+
+# Change permissions
+#chown root.root /etc/cron.daily/foxup-client
+#chown -R root.root /etc/foxup/
+#chmod 0750 /etc/cron.daily/foxup-client
+#chmod 0750 /etc/foxup/pre_backup.d/*
+

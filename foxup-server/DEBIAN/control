@@ -1,0 +1,17 @@
+Package: foxup-server
+Version: 1.0
+Section: utils
+Priority: optional
+Architecture: all
+Essential: no
+Depends: perl (>= 5.8), rsync (>= 3.0)
+Maintainer: Hagen Fuchs <code@hfuchs.net>
+Description: Simple backup scripts well suited to desktop or mobile systems.
+ This is the "server" side of the ultra light-weight foxup backup
+ solution.  It's really just a init-script that runs rsync in daemon
+ mode.  You have to install both packages (-client and -server) if you
+ want to do rsnapshot-style backups (backup to USB disk).
+  
+ The advantage of this setup is simple: anacron likes foxup (which means
+ you finally get true mobile backups).
+
