@@ -3,6 +3,31 @@ foxup - Client-Driven Backup™
 
 2012-03-11, by Hagen Fuchs <code@hfuchs.net>
 
+Synopsis
+------------------------------------------------------------
+
+foxup consists of a client and a server part.  You need both.  Install
+foxup-server on a remote (but client-accessible) location.  localhost
+will do in a pinch.  As a matter of fact, you'll probably want to backup
+the server onto itsself like that (except, of course, you have
+a /second/ backup machine).
+
+Edit /etc/foxup-server/rsyncd.conf (make sure you change /mnt/backup/
+into something that fits your local environment).  The localhost
+solution is pretty much preconfigured.
+
+Edit /etc/default/foxup-client and -server.  Test (on the client) with
+
+    /etc/cron.daily/foxup-client
+
+and bring that tail to some use:
+
+    tail -f /var/log/syslog
+
+Should say "Backup succesful" when foxup-client finishes.  Fix if it
+doesn't.
+
+
 Motivation / Introduction
 ------------------------------------------------------------
 
