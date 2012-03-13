@@ -12,6 +12,12 @@
 # To actually run the cron.daily job, uncomment this line.
 #run=yes
 
+# If you've changed the port number the server listens on (in
+# /etc/default/foxup-server), then you need to change it here as well.
+# The defaults should be fine, though, as they don't interfere with the
+# normal rsyncd on port 873.
+#port=874
+
 # Logger definitions - probably don't need to touch this.
 log_info="logger -i -t foxup-client -p daemon.info"
 log_err="logger -s -i -t foxup-client -p daemon.err"
