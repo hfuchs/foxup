@@ -4,6 +4,20 @@
 # Oh, and, yes - uncomment this line if you actually want the server to run.
 #RUN=true
 
+# Definitions for the server's house-keeping script (eg. rotating
+# backups).
+# Set the base directory for backups here.
+backup_root=""
+
+# Define the number of days that backups are to reach back.  Counting
+# from 0!
+max_days=6
+
+# Logger definitions - probably don't need to touch this.
+log_info="logger -i -t foxup-server -p daemon.info"
+log_err="logger  -i -t foxup-server -p daemon.err"
+
+# -------------------------------------------------------------------------
 # Extra options for rsyncd.  Don't change the port option without a good
 # reason - we don't want to block the normal rsyncd (port 873).
 # foxup-client connects here by default.
