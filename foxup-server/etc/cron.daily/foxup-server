@@ -1,0 +1,62 @@
+#!/bin/sh
+# 2011-02-13, Check whether the specified hosts have backed up their shit.
+
+# TODO Let clients rsync to $base/current, rotate it to $base/last and
+# (before that, obviously :) move $base/last to $base/$(date
+# '+%Y-%m-%dT%H:%M').  /Then/, the server just checks disk usage and
+# deletes the list of time points from the end till it satisfies the
+# requirements (notifying/warning as appropriate).  The client can then
+# decide whether to do hourly, quarter-hourly, minutely or monthly
+# backups.  Sounds rather sweet.
+
+# -- Parameters
+debug=0
+backup_root="/mnt/backup"
+rsync_conf="/etc/foxup-server/rsyncd.conf"
+max_days=6                  # counting from 0!
+errors=0
+
+# Define loggers
+log_info="logger -i -t foxup-server -p daemon.info"
+log_err="logger  -i -t foxup-server -p daemon.err"
+
+# Load defaults (backup root, number of days to keep backups).
+. /etc/default/foxup-server
+
+if [ $debug != "0" ]; then
+  log_info="$log_info -s"
+  log_err="$log_err -s"
+fi
+
+# -- Get machine names from the rsync config.
+machines=$(sed -n 's/^\[\([a-z]\+\)\]\s*$/\1/p' $rsync_conf)
+$log_info "Machines in backup: " $machines
+
+# -- Rotate backups and complain about non-active machines.
+for host in $machines; do
+    # Don't rotate if a backup seems to be running now!
+    # TODO Should wait in the bg.
+    fuser -s "$backup_root/$host"
+    if [ "$?" = "0" ]; then
+        $log_info "Host $host: backup seems to be running right now."
+        continue   # Next host.
+    fi
+    # Now we can safely cd().
+    cd "$backup_root/$host"
+    # Does the first backup exist?  Is it recent?  If not complain!
+    if [ ! -d day.0 ]; then
+        $log_err "Host $host: No recent backup."
+	errors=$((errors+1))
+        continue   # Next host.
+    fi
+    # Remove last week's snapshot directory (if it exists).
+    [ -d day.6 ] && rm -r day.6
+    # Daily Rotator (TODO weekly, too).
+    for i in `seq 5 -1 0`; do
+        [ -d day.$i ] && mv day.$i day.$((i+1))
+    done
+    $log_info "Host $host: Rotated backups."
+done
+
+exit $errors
+
