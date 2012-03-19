@@ -26,4 +26,5 @@
 - /proc/*
 - /tmp/*
 - /run/*
+- /lib/init/rw/*
 
