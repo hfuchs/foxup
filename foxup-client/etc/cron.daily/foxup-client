@@ -38,7 +38,7 @@ run-parts --exit-on-error --report /etc/foxup-client/pre_backup.d
 $log_info "Starting the backup."
 # This rather unwieldy expression makes it possible to avoid headaches
 # about how to create a link to the "last" backup on the server-side.
-last=$(rsync --port=$port $server::$client/* | head -n1 | sed 's|^.\{43\}||')
+last=$(rsync --port=$port $server::$client/* | sort -k5 -r | head -n1 | sed 's|^.\{43\}||')
 rsync_options="$rsync_options --link-dest=../$last"
 rsync $rsync_options / $server::$client/$(date +"%Y-%m-%d_%H:%M")
 
