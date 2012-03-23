@@ -1,10 +1,10 @@
 Package: foxup-client
-Version: 1.0
+Version: 1.1
 Section: utils
 Priority: optional
 Architecture: all
 Essential: no
-Depends: perl (>= 5.8), wakeonlan (>= 0.41), rsync (>= 3.0)
+Depends: wakeonlan (>= 0.41), rsync (>= 3.0)
 Maintainer: Hagen Fuchs <code@hfuchs.net>
 Description: Simple backup scripts well suited to desktop or mobile systems.
  This is the client side of the ultra light-weight foxup backup
