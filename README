@@ -9,23 +9,23 @@ Synopsis
 foxup consists of a client and a server part.  You need both.  Install
 foxup-server on a remote (but client-accessible) location.  localhost
 will do in a pinch.  As a matter of fact, you'll probably want to backup
-the server onto itsself like that (except, of course, you have
-a /second/ backup machine).
+the server onto itsself like that.
 
 Edit /etc/foxup-server/rsyncd.conf (make sure you change /mnt/backup/
 into something that fits your local environment).  The localhost
 solution is pretty much preconfigured.
 
-Edit /etc/default/foxup-client and -server.  Test (on the client) with
+Read and edit /etc/default/foxup-client and -server.  On the client,
+test with
 
     /etc/cron.daily/foxup-client
 
-and bring that tail to some use:
+Meanwhile bring that tail to some use and say
 
     tail -f /var/log/syslog
 
-Should say "Backup succesful" when foxup-client finishes.  Fix if it
-doesn't.
+Should say "Backup succesful" when foxup-client finishes or at least
+produce helpful error messages.
 
 
 Motivation / Introduction
