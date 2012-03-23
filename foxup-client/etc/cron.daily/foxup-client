@@ -29,14 +29,18 @@ fi
 
 # Now set the final option blob.  TODO In /etc/default?
 rsync_options="--port=$port --delete --archive --hard-links --acls \
-    --xattrs --exclude-from /etc/foxup-client/ignore --link-dest=../day.1"
+    --xattrs --exclude-from /etc/foxup-client/ignore"
 
 # Run pre-backup scripts now.
 run-parts --exit-on-error --report /etc/foxup-client/pre_backup.d
 
 # Note: Backing up the *whole* fs tree!  Edit your filter file!
 $log_info "Starting the backup."
-rsync $rsync_options / $server::$client/day.0
+# This rather unwieldy expression makes it possible to avoid headaches
+# about how to create a link to the "last" backup on the server-side.
+last=$(rsync --port=$port $server::$client/* | head -n1 | sed 's|^.\{43\}||')
+rsync_options="$rsync_options --link-dest=../$last"
+rsync $rsync_options / $server::$client/$(date +"%Y-%m-%d_%H:%M")
 
 # Let the world know.
 if [ "$?" = "0" ]; then
